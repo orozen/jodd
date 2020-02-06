@@ -1,13 +1,12 @@
-include 'distribution'
+rootProject.name = "jodd"
 
-include 'jodd-all'
-include 'jodd-bean'
 include 'jodd-core'
+include 'jodd-bean'
 include 'jodd-db'
 include 'jodd-decora'
 include 'jodd-htmlstapler'
 include 'jodd-http'
-include 'jodd-joy'
+//include 'jodd-joy'
 include 'jodd-json'
 include 'jodd-jtx'
 include 'jodd-lagarto'
@@ -19,5 +18,3 @@ include 'jodd-props'
 include 'jodd-proxetta'
 include 'jodd-servlet'
 include 'jodd-vtor'
-
-include 'jodd-bom'
