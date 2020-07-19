@@ -47,31 +47,35 @@ public class Routes {
 		this.actionsManager = actionsManager;
 	}
 
-	public RouteChunk registerPath(String method, String path) {
-		if (method == null) {
-			method = ANY_METHOD;
-		}
-		else {
-			method = method.toUpperCase();
-		}
+    public RouteChunk registerPath(String method, String path) {
+        RouteChunk chunk;
+        String[] pathChunks;
+        int i;
+/*1*/	if (method == null) {
+/*2*/		method = ANY_METHOD;
+        } else {
+/*3*/		method = method.toUpperCase();
+        }
 
-		RouteChunk chunk = root.findOrCreateChild(method);
+/*4*/	chunk = root.findOrCreateChild(method);
 
-		if (method.equals(ANY_METHOD)) {
-			// cache common root chunk
-			anyMethodChunk = chunk;
-		}
+/*5*/	if (method.equals(ANY_METHOD)) {
+            // cache common root chunk
+/*6*/		anyMethodChunk = chunk;
+        }
 
-		path = StringUtil.cutSurrounding(path, StringPool.SLASH);
+/*7*/	path = StringUtil.cutSurrounding(path, StringPool.SLASH);
 
-		String[] pathChunks = StringUtil.splitc(path, '/');
+/*8*/	pathChunks = StringUtil.splitc(path, '/');
 
-		for (String pathChunk : pathChunks) {
-			chunk = chunk.findOrCreateChild(pathChunk);
-		}
+/*9*/	i = 0;
+/*10*/	while (i < pathChunks.length) {
+/*11*/		chunk = chunk.findOrCreateChild(pathChunks[i]);
+/*12*/		i++;
+        }
 
-		return chunk;
-	}
+/*13*/	return chunk;
+    }
 
 	public ActionRuntime lookup(final String method, final String[] pathChunks) {
 		while (true) {
