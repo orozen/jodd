@@ -56,24 +56,18 @@ public class Routes {
         } else {
 /*3*/		method = method.toUpperCase();
         }
-
 /*4*/	chunk = root.findOrCreateChild(method);
 
-/*5*/	if (method.equals(ANY_METHOD)) {
-            // cache common root chunk
+/*5*/	if (method.equals(ANY_METHOD))
 /*6*/		anyMethodChunk = chunk;
-        }
 
 /*7*/	path = StringUtil.cutSurrounding(path, StringPool.SLASH);
-
 /*8*/	pathChunks = StringUtil.splitc(path, '/');
-
 /*9*/	i = 0;
 /*10*/	while (i < pathChunks.length) {
 /*11*/		chunk = chunk.findOrCreateChild(pathChunks[i]);
 /*12*/		i++;
         }
-
 /*13*/	return chunk;
     }
 
