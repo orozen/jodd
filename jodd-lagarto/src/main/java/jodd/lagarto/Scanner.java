@@ -159,11 +159,19 @@ class Scanner {
 	 * Calculates {@link Position current position}: offset, line and column.
 	 */
 	protected Position position(final int position) {
-/*17*/	Position pos = new Position(position, getLine(position), position - getLastNewLineOffset(position) + 1);
-/*15*/	lastLine = getLine(position);
-/*16*/	lastLastNewLineOffset = getLastNewLineOffset(position);
-/*14*/	lastOffset = getOffset(position);
+		Position pos = getPosition(position);
+		updateScannerFields(position);
 		return pos;
+	}
+
+	private void updateScannerFields(int position) {
+		lastLine = getLine(position);
+		lastLastNewLineOffset = getLastNewLineOffset(position);
+		lastOffset = getOffset(position);
+	}
+
+	private Position getPosition(int position) {
+		return new Position(position, getLine(position), position - getLastNewLineOffset(position) + 1);
 	}
 
 	private int getOffset(int position) {
