@@ -163,32 +163,29 @@ class Scanner {
 		int offset;
 		int lastNewLineOffset;
 
-		if (position > lastOffset) {
-			line = 1;
-			offset = 0;
-			lastNewLineOffset = 0;
+/*1*/	if (position > lastOffset) {
+/*2*/		line = 1;
+/*3*/		offset = 0;
+/*4*/		lastNewLineOffset = 0;
 		} else {
-			line = lastLine;
-			offset = lastOffset;
-			lastNewLineOffset = lastLastNewLineOffset;
+/*5*/		line = lastLine;
+/*6*/		offset = lastOffset;
+/*7*/		lastNewLineOffset = lastLastNewLineOffset;
 		}
-
-		while (offset < position) {
-			final char c = input[offset];
-
-			if (c == '\n') {
-				line++;
-				lastNewLineOffset = offset + 1;
+/*8*/	while (offset < position) {
+/*9*/		final char c = input[offset];
+/*10*/		if (c == '\n') {
+/*11*/			line++;
+/*12*/			lastNewLineOffset = offset + 1;
 			}
-
-			offset++;
+/*13*/		offset++;
 		}
+/*14*/	lastOffset = offset;
+/*15*/	lastLine = line;
+/*16*/	lastLastNewLineOffset = lastNewLineOffset;
 
-		lastOffset = offset;
-		lastLine = line;
-		lastLastNewLineOffset = lastNewLineOffset;
-
-		return new Position(position, line, position - lastNewLineOffset + 1);
+/*17*/	Position pos = new Position(position, line, position - lastNewLineOffset + 1);
+		return pos;
 	}
 
 	/**
