@@ -155,15 +155,6 @@ class Scanner {
 		return ndx >= total;
 	}
 
-	/**
-	 * Calculates {@link Position current position}: offset, line and column.
-	 */
-	protected Position position(final int position) {
-		Position pos = getPosition(position);
-		updateScannerFields(position);
-		return pos;
-	}
-
 	void updateScannerFields(int position) {
 		lastLine = getLine(position);
 		lastLastNewLineOffset = getLastNewLineOffset(position);
