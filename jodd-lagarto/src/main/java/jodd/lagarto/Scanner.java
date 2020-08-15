@@ -164,13 +164,13 @@ class Scanner {
 		return pos;
 	}
 
-	private void updateScannerFields(int position) {
+	void updateScannerFields(int position) {
 		lastLine = getLine(position);
 		lastLastNewLineOffset = getLastNewLineOffset(position);
 		lastOffset = getOffset(position);
 	}
 
-	private Position getPosition(int position) {
+	Position getPosition(int position) {
 		return new Position(position, getLine(position), position - getLastNewLineOffset(position) + 1);
 	}
 

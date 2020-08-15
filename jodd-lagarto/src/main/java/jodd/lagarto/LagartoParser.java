@@ -2919,7 +2919,9 @@ public class LagartoParser extends Scanner {
 		tag.end(ndx + 1);
 
 		if (config.calculatePosition) {
-			tag.setPosition(position(tag.getTagPosition()));
+			final int oldPosition = tag.getTagPosition();
+			tag.setPosition(getPosition(oldPosition));
+			updateScannerFields(oldPosition);
 		}
 
 		if (tag.getType().isStartingTag()) {
@@ -3062,7 +3064,8 @@ public class LagartoParser extends Scanner {
 	 */
 	protected void _error(String message) {
 		if (config.calculatePosition) {
-			Position currentPosition = position(ndx);
+			Position currentPosition = getPosition(ndx);
+			updateScannerFields(ndx);
 			message = message
 					.concat(StringPool.SPACE)
 					.concat(currentPosition.toString());
