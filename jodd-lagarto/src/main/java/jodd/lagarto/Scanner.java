@@ -160,40 +160,50 @@ class Scanner {
 	 */
 	protected Position position(final int position) {
 		int line = getLine(position);
-		int offset;
-		int lastNewLineOffset;
+		int offset = getOffset(position);
+		int lastNewLineOffset = getLastNewLineOffset(position);
 
-		//Slice: N_V={Entry,1,3,4,6,7,8,9,10,12,13,Exit}
-/*1*/	if (position > lastOffset) {
-/*3*/		offset = 0;
-/*4*/		lastNewLineOffset = 0;
-		} else {
-/*6*/		offset = lastOffset;
-/*7*/		lastNewLineOffset = lastLastNewLineOffset;
-		}
-/*8*/	while (offset < position) {
-/*9*/		final char c = input[offset];
-/*10*/		if (c == '\n') {
-/*12*/			lastNewLineOffset = offset + 1;
-			}
-/*13*/		offset++;
-		}
-
-		//Co-Slice: N_CoV={Entry,1,3,6,8,13,14,15,16,17,Exit}
-/*1*/	if (position > lastOffset) {
-/*3*/		offset = 0;
-		} else {
-/*6*/		offset = lastOffset;
-		}
-/*8*/	while (offset < position) {
-/*13*/		offset++;
-		}
 /*14*/	lastOffset = offset;
 /*15*/	lastLine = line;
 /*16*/	lastLastNewLineOffset = lastNewLineOffset;
 
 /*17*/	Position pos = new Position(position, line, position - lastNewLineOffset + 1);
 		return pos;
+	}
+
+	private int getOffset(int position) {
+		int offset;/*1*/
+		if (position > lastOffset) {
+		/*3*/		offset = 0;
+				} else {
+		/*6*/		offset = lastOffset;
+				}
+		/*8*/
+		while (offset < position) {
+		/*13*/		offset++;
+				}
+		return offset;
+	}
+
+	private int getLastNewLineOffset(int position) {
+		int offset;
+		int lastNewLineOffset;/*1*/
+		if (position > lastOffset) {
+		/*3*/		offset = 0;
+		/*4*/		lastNewLineOffset = 0;
+				} else {
+		/*6*/		offset = lastOffset;
+		/*7*/		lastNewLineOffset = lastLastNewLineOffset;
+				}
+		/*8*/
+		while (offset < position) {
+		/*9*/		final char c = input[offset];
+		/*10*/		if (c == '\n') {
+		/*12*/			lastNewLineOffset = offset + 1;
+					}
+		/*13*/		offset++;
+				}
+		return lastNewLineOffset;
 	}
 
 	private int getLine(int position) {
