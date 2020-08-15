@@ -172,37 +172,37 @@ class Scanner {
 	}
 
 	private int getOffset(int position) {
-		int offset;/*1*/
-		if (position > lastOffset) {
-		/*3*/		offset = 0;
-				} else {
-		/*6*/		offset = lastOffset;
-				}
-		/*8*/
+		int offset;
+/*1*/	if (position > lastOffset) {
+/*3*/		offset = 0;
+		} else {
+/*6*/		offset = lastOffset;
+		}
+/*8*/
 		while (offset < position) {
-		/*13*/		offset++;
-				}
+/*13*/		offset++;
+		}
 		return offset;
 	}
 
 	private int getLastNewLineOffset(int position) {
 		int offset;
-		int lastNewLineOffset;/*1*/
-		if (position > lastOffset) {
-		/*3*/		offset = 0;
-		/*4*/		lastNewLineOffset = 0;
-				} else {
-		/*6*/		offset = lastOffset;
-		/*7*/		lastNewLineOffset = lastLastNewLineOffset;
-				}
-		/*8*/
+		int lastNewLineOffset;
+/*1*/	if (position > lastOffset) {
+/*3*/		offset = 0;
+/*4*/		lastNewLineOffset = 0;
+		} else {
+/*6*/		offset = lastOffset;
+/*7*/		lastNewLineOffset = lastLastNewLineOffset;
+		}
+/*8*/
 		while (offset < position) {
-		/*9*/		final char c = input[offset];
-		/*10*/		if (c == '\n') {
-		/*12*/			lastNewLineOffset = offset + 1;
-					}
-		/*13*/		offset++;
-				}
+/*9*/		final char c = input[offset];
+/*10*/		if (c == '\n') {
+/*12*/			lastNewLineOffset = offset + 1;
+			}
+/*13*/		offset++;
+		}
 		return lastNewLineOffset;
 	}
 
