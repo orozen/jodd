@@ -163,19 +163,33 @@ class Scanner {
 		int offset;
 		int lastNewLineOffset;
 
+		//Slice: N_V={Entry,1,2,3,5,6,8,9,10,11,13,Exit}
 /*1*/	if (position > lastOffset) {
 /*2*/		line = 1;
 /*3*/		offset = 0;
-/*4*/		lastNewLineOffset = 0;
 		} else {
 /*5*/		line = lastLine;
+/*6*/		offset = lastOffset;
+		}
+/*8*/	while (offset < position) {
+/*9*/		final char c = input[offset];
+/*10*/		if (c == '\n') {
+/*11*/			line++;
+			}
+/*13*/		offset++;
+		}
+
+		//Co-Slice: N_CoV={Entry,1,3,4,6,7,8,9,10,12,13,14,15,16,17,Exit}
+/*1*/	if (position > lastOffset) {
+/*3*/		offset = 0;
+/*4*/		lastNewLineOffset = 0;
+		} else {
 /*6*/		offset = lastOffset;
 /*7*/		lastNewLineOffset = lastLastNewLineOffset;
 		}
 /*8*/	while (offset < position) {
 /*9*/		final char c = input[offset];
 /*10*/		if (c == '\n') {
-/*11*/			line++;
 /*12*/			lastNewLineOffset = offset + 1;
 			}
 /*13*/		offset++;
