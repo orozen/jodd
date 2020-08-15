@@ -163,7 +163,7 @@ class Scanner {
 		int offset;
 		int lastNewLineOffset;
 
-		//Co-Slice: N_CoV={Entry,1,3,4,6,7,8,9,10,12,13,14,15,16,17,Exit}
+		//Slice: N_V={Entry,1,3,4,6,7,8,9,10,12,13,Exit}
 /*1*/	if (position > lastOffset) {
 /*3*/		offset = 0;
 /*4*/		lastNewLineOffset = 0;
@@ -176,6 +176,16 @@ class Scanner {
 /*10*/		if (c == '\n') {
 /*12*/			lastNewLineOffset = offset + 1;
 			}
+/*13*/		offset++;
+		}
+
+		//Co-Slice: N_CoV={Entry,1,3,6,8,13,14,15,16,17,Exit}
+/*1*/	if (position > lastOffset) {
+/*3*/		offset = 0;
+		} else {
+/*6*/		offset = lastOffset;
+		}
+/*8*/	while (offset < position) {
 /*13*/		offset++;
 		}
 /*14*/	lastOffset = offset;
