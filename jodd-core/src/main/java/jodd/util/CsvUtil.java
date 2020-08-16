@@ -103,8 +103,7 @@ public class CsvUtil {
 			char c = line.charAt(i);
 			addFieldToStringArray(line, row, inQuotedField, fieldStart, len, i, c);
 
-			// After = slide(5) + slide(10) + slide(11) + slide(12) + slide(14) + slide(15)
-			// = {2,3,5,6,7,8,10,11,12,13,14,15}
+			// Slice = {Entry,2,3,5,6,7,8,10,13,15,Exit}
 /*2*/		if (c == FIELD_SEPARATOR) {
 /*3*/			if (!inQuotedField) {	// ignore we are quoting
 /*5*/				fieldStart = i + 1;
@@ -114,13 +113,27 @@ public class CsvUtil {
 /*7*/				if (inQuotedField) {
 /*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
 /*10*/						fieldStart = i + 2;
+						}
+					} else {
+/*13*/					if (fieldStart == i) {
+/*15*/						fieldStart++;            // move field start
+						}
+					}
+				}
+			}
+
+			// Co-Slice = {Entry,2,6,7,8,11,12,13,14,Exit}
+/*2*/		if (c == FIELD_SEPARATOR) {
+            } else {
+/*6*/			if (c == FIELD_QUOTE) {
+/*7*/				if (inQuotedField) {
+/*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
 /*11*/						i++; // and skip the comma
 /*12*/						inQuotedField = false;
 						}
 					} else {
 /*13*/					if (fieldStart == i) {
 /*14*/						inQuotedField = true;    // this is a beginning of a quote
-/*15*/						fieldStart++;            // move field start
 						}
 					}
 				}
