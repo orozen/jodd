@@ -100,11 +100,11 @@ public class CsvUtil {
 
         final int len = line.length();
         for (int i = 0; i < len; i++) {
+        	// Before = slide(1) + slide(4) + slide(9) + slide(10) = {1,2,3,4,6,7,8,9,10}
 /*1*/		char c = line.charAt(i);
 /*2*/		if (c == FIELD_SEPARATOR) {
 /*3*/			if (!inQuotedField) {	// ignore we are quoting
 /*4*/				addField(row, line, fieldStart, i, inQuotedField);
-/*5*/				fieldStart = i + 1;
                 }
             } else {
 /*6*/			if (c == FIELD_QUOTE) {
@@ -112,6 +112,18 @@ public class CsvUtil {
 /*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
 /*9*/						addField(row, line, fieldStart, i, inQuotedField);
 /*10*/						fieldStart = i + 2;
+						}
+					} else {
+					}
+				}
+			}
+
+			// Marked + Promoted = slide(11) + slide(12) + slide(14) + slide(15) = {2,6,7,8,11,12,13,14,15}
+/*2*/		if (c == FIELD_SEPARATOR) {
+            } else {
+/*6*/			if (c == FIELD_QUOTE) {
+/*7*/				if (inQuotedField) {
+/*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
 /*11*/						i++; // and skip the comma
 /*12*/						inQuotedField = false;
 						}
@@ -122,6 +134,14 @@ public class CsvUtil {
 						}
 					}
 				}
+			}
+
+			// After (arbitrary) = slide(5) = {2,3,5}
+/*2*/		if (c == FIELD_SEPARATOR) {
+/*3*/			if (!inQuotedField) {	// ignore we are quoting
+/*5*/				fieldStart = i + 1;
+                }
+            } else {
 			}
         }
         // add last field - but only if string was not empty
