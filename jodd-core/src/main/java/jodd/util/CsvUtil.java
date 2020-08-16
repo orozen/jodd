@@ -100,24 +100,8 @@ public class CsvUtil {
 
         final int len = line.length();
         for (int i = 0; i < len; i++) {
-        	// Before = slide(1) = {1}
-/*1*/		char c = line.charAt(i);
-
-			// Marked = slide(4) + slide(9) = {2,3,4,6,7,8,9}
-/*2*/		if (c == FIELD_SEPARATOR) {
-/*3*/			if (!inQuotedField) {	// ignore we are quoting
-/*4*/				addField(row, line, fieldStart, i, inQuotedField);
-                }
-            } else {
-/*6*/			if (c == FIELD_QUOTE) {
-/*7*/				if (inQuotedField) {
-/*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
-/*9*/						addField(row, line, fieldStart, i, inQuotedField);
-						}
-					} else {
-					}
-				}
-			}
+			char c = line.charAt(i);
+			addFieldToStringArray(line, row, inQuotedField, fieldStart, len, i, c);
 
 			// After = slide(5) + slide(10) + slide(11) + slide(12) + slide(14) + slide(15)
 			// = {2,3,5,6,7,8,10,11,12,13,14,15}
@@ -147,6 +131,23 @@ public class CsvUtil {
             addField(row, line, fieldStart, len, inQuotedField);
         }
         return row.toArray(new String[0]);
+	}
+
+	private static void addFieldToStringArray(String line, List<String> row, boolean inQuotedField, int fieldStart, int len, int i, char c) {
+		/*2*/
+		if (c == FIELD_SEPARATOR) {
+		/*3*/			if (!inQuotedField) {	// ignore we are quoting
+		/*4*/				addField(row, line, fieldStart, i, inQuotedField);
+						}
+					} else {
+		/*6*/			if (c == FIELD_QUOTE) {
+		/*7*/				if (inQuotedField) {
+		/*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
+		/*9*/						addField(row, line, fieldStart, i, inQuotedField);
+								}
+							}
+						}
+					}
 	}
 
 	private static void addField(final List<String> row, final String line, final int startIndex, final int endIndex, final boolean inQuoted) {
