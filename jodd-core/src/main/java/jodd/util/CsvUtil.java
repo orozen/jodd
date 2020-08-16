@@ -103,6 +103,8 @@ public class CsvUtil {
 			char c = line.charAt(i);
 			addFieldToStringArray(line, row, inQuotedField, fieldStart, len, i, c);
 
+			int savedFieldStart = fieldStart;
+
 			// Slice = {Entry,2,3,5,6,7,8,10,13,15,Exit}
 /*2*/		if (c == FIELD_SEPARATOR) {
 /*3*/			if (!inQuotedField) {	// ignore we are quoting
@@ -132,7 +134,7 @@ public class CsvUtil {
 /*12*/						inQuotedField = false;
 						}
 					} else {
-/*13*/					if (fieldStart == i) {
+/*13*/					if (savedFieldStart == i) {
 /*14*/						inQuotedField = true;    // this is a beginning of a quote
 						}
 					}
