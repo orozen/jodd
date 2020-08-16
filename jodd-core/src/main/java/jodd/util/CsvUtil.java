@@ -133,21 +133,21 @@ public class CsvUtil {
         return row.toArray(new String[0]);
 	}
 
+	// Extracted Marked bucket from toStringArray
 	private static void addFieldToStringArray(String line, List<String> row, boolean inQuotedField, int fieldStart, int len, int i, char c) {
-		/*2*/
-		if (c == FIELD_SEPARATOR) {
-		/*3*/			if (!inQuotedField) {	// ignore we are quoting
-		/*4*/				addField(row, line, fieldStart, i, inQuotedField);
-						}
-					} else {
-		/*6*/			if (c == FIELD_QUOTE) {
-		/*7*/				if (inQuotedField) {
-		/*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
-		/*9*/						addField(row, line, fieldStart, i, inQuotedField);
-								}
-							}
-						}
+/*2*/	if (c == FIELD_SEPARATOR) {
+/*3*/		if (!inQuotedField) {	// ignore we are quoting
+/*4*/			addField(row, line, fieldStart, i, inQuotedField);
+			}
+		} else {
+/*6*/		if (c == FIELD_QUOTE) {
+/*7*/			if (inQuotedField) {
+/*8*/				if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
+/*9*/					addField(row, line, fieldStart, i, inQuotedField);
 					}
+				}
+			}
+		}
 	}
 
 	private static void addField(final List<String> row, final String line, final int startIndex, final int endIndex, final boolean inQuoted) {
