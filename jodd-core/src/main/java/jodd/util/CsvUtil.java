@@ -105,28 +105,10 @@ public class CsvUtil {
 
 			int savedFieldStart = fieldStart;
 
-			// Slice = {Entry,2,3,5,6,7,8,10,13,15,Exit}
-/*2*/		if (c == FIELD_SEPARATOR) {
-/*3*/			if (!inQuotedField) {	// ignore we are quoting
-/*5*/				fieldStart = i + 1;
-                }
-            } else {
-/*6*/			if (c == FIELD_QUOTE) {
-/*7*/				if (inQuotedField) {
-/*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
-/*10*/						fieldStart = i + 2;
-						}
-					} else {
-/*13*/					if (fieldStart == i) {
-/*15*/						fieldStart++;            // move field start
-						}
-					}
-				}
-			}
+			fieldStart = getFieldStart(line, inQuotedField, fieldStart, len, i, c);
 
 			// Co-Slice = {Entry,2,6,7,8,11,12,13,14,Exit}
-/*2*/		if (c == FIELD_SEPARATOR) {
-            } else {
+/*2.0*/		if (c != FIELD_SEPARATOR) {
 /*6*/			if (c == FIELD_QUOTE) {
 /*7*/				if (inQuotedField) {
 /*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
@@ -146,6 +128,24 @@ public class CsvUtil {
             addField(row, line, fieldStart, len, inQuotedField);
         }
         return row.toArray(new String[0]);
+	}
+
+	// Extracted method for the slice when sliding on V={fieldStart}
+	private static int getFieldStart(String line, boolean inQuotedField, int fieldStart, int len, int i, char c) {
+/*2*/	if (c == FIELD_SEPARATOR) {
+/*3*/		if (!inQuotedField) {	// ignore we are quoting
+/*5*/			fieldStart = i + 1;
+			}
+/*6*/   } else if (c == FIELD_QUOTE) {
+/*7*/		if (inQuotedField) {
+/*8*/			if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
+/*10*/				fieldStart = i + 2;
+				}
+/*13*/		} else if (fieldStart == i) {
+/*15*/				fieldStart++;            // move field start
+			}
+		}
+		return fieldStart;
 	}
 
 	// Extracted Marked bucket from toStringArray
