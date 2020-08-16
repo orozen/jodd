@@ -107,35 +107,38 @@ public class CsvUtil {
 			boolean savedInQuotedField = inQuotedField;
 
 			fieldStart = getFieldStart(line, inQuotedField, fieldStart, len, i, c);
-
-			// Slice = {Entry,6,7,8,12,13,14,Exit}
-/*6*/		if (c == FIELD_QUOTE) {
-/*7*/			if (inQuotedField) {
-/*8*/				if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
-/*12*/					inQuotedField = false;
-					}
-				} else {
-/*13*/				if (savedFieldStart == i) {
-/*14*/					inQuotedField = true;    // this is a beginning of a quote
-					}
-				}
-			}
-
-			// Co-Slice = {Entry,6,7,8,11,Exit}
-/*6*/		if (c == FIELD_QUOTE) {
-/*7*/			if (savedInQuotedField) {
-/*8*/				if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
-/*11*/					i++; // and skip the comma
-					}
-				} else {
-				}
-			}
-        }
+			inQuotedField = isInQuotedField(line, inQuotedField, len, i, c, savedFieldStart);
+			i = getI(line, len, i, c, savedInQuotedField);
+		}
         // add last field - but only if string was not empty
         if (len > 0 && fieldStart <= len) {
             addField(row, line, fieldStart, len, inQuotedField);
         }
         return row.toArray(new String[0]);
+	}
+
+	// Extracted method for the co-slice when sliding on V={inQuotedField}
+	private static int getI(String line, int len, int i, char c, boolean savedInQuotedField) {
+/*6+7*/	if (c == FIELD_QUOTE && savedInQuotedField) {
+/*8*/		if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
+/*11*/			i++; // and skip the comma
+			}
+		}
+		return i;
+	}
+
+	// Extracted method for the slice when sliding on V={inQuotedField}
+	private static boolean isInQuotedField(String line, boolean inQuotedField, int len, int i, char c, int savedFieldStart) {
+/*6*/	if (c == FIELD_QUOTE) {
+/*7*/		if (inQuotedField) {
+/*8*/			if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
+/*12*/				inQuotedField = false;
+				}
+/*13*/		} else if (savedFieldStart == i) {
+/*14*/			inQuotedField = true;    // this is a beginning of a quote
+			}
+		}
+		return inQuotedField;
 	}
 
 	// Extracted method for the slice when sliding on V={fieldStart}
