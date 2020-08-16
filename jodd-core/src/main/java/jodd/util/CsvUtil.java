@@ -104,6 +104,7 @@ public class CsvUtil {
 			addFieldToStringArray(line, row, inQuotedField, fieldStart, len, i, c);
 
 			int savedFieldStart = fieldStart;
+			boolean savedInQuotedField = inQuotedField;
 
 			fieldStart = getFieldStart(line, inQuotedField, fieldStart, len, i, c);
 
@@ -122,7 +123,7 @@ public class CsvUtil {
 
 			// Co-Slice = {Entry,6,7,8,11,Exit}
 /*6*/		if (c == FIELD_QUOTE) {
-/*7*/			if (inQuotedField) {
+/*7*/			if (savedInQuotedField) {
 /*8*/				if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
 /*11*/					i++; // and skip the comma
 					}
