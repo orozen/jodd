@@ -107,17 +107,26 @@ public class CsvUtil {
 
 			fieldStart = getFieldStart(line, inQuotedField, fieldStart, len, i, c);
 
-			// Co-Slice = {Entry,2,6,7,8,11,12,13,14,Exit}
+			// Slice = {Entry,6,7,8,12,13,14,Exit}
 /*6*/		if (c == FIELD_QUOTE) {
 /*7*/			if (inQuotedField) {
 /*8*/				if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
-/*11*/					i++; // and skip the comma
 /*12*/					inQuotedField = false;
 					}
 				} else {
 /*13*/				if (savedFieldStart == i) {
 /*14*/					inQuotedField = true;    // this is a beginning of a quote
 					}
+				}
+			}
+
+			// Co-Slice = {Entry,6,7,8,11,Exit}
+/*6*/		if (c == FIELD_QUOTE) {
+/*7*/			if (inQuotedField) {
+/*8*/				if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
+/*11*/					i++; // and skip the comma
+					}
+				} else {
 				}
 			}
         }
