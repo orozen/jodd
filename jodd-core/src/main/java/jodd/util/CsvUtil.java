@@ -113,14 +113,12 @@ public class CsvUtil {
 /*9*/						addField(row, line, fieldStart, i, inQuotedField);
 /*10*/						fieldStart = i + 2;
 						}
-					} else {
 					}
 				}
 			}
 
 			// Marked + Promoted = slide(11) + slide(12) + slide(14) + slide(15) = {2,6,7,8,11,12,13,14,15}
-/*2*/		if (c == FIELD_SEPARATOR) {
-            } else {
+/*2*/		if (c != FIELD_SEPARATOR) {
 /*6*/			if (c == FIELD_QUOTE) {
 /*7*/				if (inQuotedField) {
 /*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
@@ -141,8 +139,7 @@ public class CsvUtil {
 /*3*/			if (!inQuotedField) {	// ignore we are quoting
 /*5*/				fieldStart = i + 1;
                 }
-            } else {
-			}
+            }
         }
         // add last field - but only if string was not empty
         if (len > 0 && fieldStart <= len) {
