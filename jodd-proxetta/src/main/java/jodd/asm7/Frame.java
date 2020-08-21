@@ -1230,16 +1230,26 @@ class Frame {
 		Integer concreteOutputType_1 = null, concreteOutputType_2 = null, concreteOutputType_3 = null,
 			concreteOutputType_4 = null, concreteOutputType_5, concreteOutputType_6 = null,
 			concreteOutputType_7;
+		// Slice: N_Vr = {Entry,1,2,3,4,7,Exit}
 /*1*/	if (outputLocals != null && i < outputLocals.length) {
 /*2*/	  	int abstractOutputType = outputLocals[i];
 /*3*/	  	if (abstractOutputType == 0) {
 /*4*/			concreteOutputType_1 = inputLocals[i];
 		  	} else {
+		  	}
+		} else {
+/*7*/	  	concreteOutputType_4 = inputLocals[i];
+		}
+
+		// Co-slice: N_CoVr = {Entry,1,2,3,5,6,8,9,10,11,Exit}
+/*1*/	if (outputLocals != null && i < outputLocals.length) {
+/*2*/	  	int abstractOutputType = outputLocals[i];
+/*3*/	  	if (abstractOutputType == 0) {
+		  	} else {
 /*5*/			concreteOutputType_2 = getConcreteOutputType(abstractOutputType, numStack);
 		  	}
 /*6*/	  	concreteOutputType_3 = phi(concreteOutputType_1, concreteOutputType_2);
 		} else {
-/*7*/	  	concreteOutputType_4 = inputLocals[i];
 		}
 /*8*/	concreteOutputType_5 = phi(concreteOutputType_3, concreteOutputType_4);
 /*9*/	if (initializations != null) {
