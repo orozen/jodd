@@ -1227,7 +1227,6 @@ class Frame {
   }
 
 	private int getConcreteOutputType(SymbolTable symbolTable, int numStack, int i) {
-		int concreteOutputType;
 		Integer concreteOutputType_1 = null, concreteOutputType_2 = null, concreteOutputType_3 = null,
 			concreteOutputType_4 = null, concreteOutputType_5, concreteOutputType_6 = null,
 			concreteOutputType_7;
@@ -1247,8 +1246,7 @@ class Frame {
 /*10*/	  	concreteOutputType_6 = getInitializedType(symbolTable, concreteOutputType_5);
 		}
 /*11*/	concreteOutputType_7 = phi(concreteOutputType_5, concreteOutputType_6);
-/*12*/	concreteOutputType = concreteOutputType_7;
-		return concreteOutputType;
+		return concreteOutputType_7;
 	}
 
 	// Assumption: if both i1 and i2 initialized, i2 is the newer value and should be chosen
