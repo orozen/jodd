@@ -1231,23 +1231,23 @@ class Frame {
 		Integer concreteOutputType_1 = null, concreteOutputType_2 = null, concreteOutputType_3 = null,
 			concreteOutputType_4 = null, concreteOutputType_5, concreteOutputType_6 = null,
 			concreteOutputType_7;
-		if (outputLocals != null && i < outputLocals.length) {
-		  int abstractOutputType = outputLocals[i];
-		  if (abstractOutputType == 0) {
-			concreteOutputType_1 = inputLocals[i];
-		  } else {
-			concreteOutputType_2 = getConcreteOutputType(abstractOutputType, numStack);
-		  }
-		  concreteOutputType_3 = phi(concreteOutputType_1, concreteOutputType_2);
+/*1*/	if (outputLocals != null && i < outputLocals.length) {
+/*2*/	  	int abstractOutputType = outputLocals[i];
+/*3*/	  	if (abstractOutputType == 0) {
+/*4*/			concreteOutputType_1 = inputLocals[i];
+		  	} else {
+/*5*/			concreteOutputType_2 = getConcreteOutputType(abstractOutputType, numStack);
+		  	}
+/*6*/	  	concreteOutputType_3 = phi(concreteOutputType_1, concreteOutputType_2);
 		} else {
-		  concreteOutputType_4 = inputLocals[i];
+/*7*/	  	concreteOutputType_4 = inputLocals[i];
 		}
-		concreteOutputType_5 = phi(concreteOutputType_3, concreteOutputType_4);
-		if (initializations != null) {
-		  concreteOutputType_6 = getInitializedType(symbolTable, concreteOutputType_5);
+/*8*/	concreteOutputType_5 = phi(concreteOutputType_3, concreteOutputType_4);
+/*9*/	if (initializations != null) {
+/*10*/	  	concreteOutputType_6 = getInitializedType(symbolTable, concreteOutputType_5);
 		}
-		concreteOutputType_7 = phi(concreteOutputType_5, concreteOutputType_6);
-		concreteOutputType = concreteOutputType_7;
+/*11*/	concreteOutputType_7 = phi(concreteOutputType_5, concreteOutputType_6);
+/*12*/	concreteOutputType = concreteOutputType_7;
 		return concreteOutputType;
 	}
 
