@@ -1228,27 +1228,34 @@ class Frame {
 
 	private int getConcreteOutputType(SymbolTable symbolTable, int numStack, int i) {
 		int concreteOutputType;
+		Integer concreteOutputType_1 = null, concreteOutputType_2 = null, concreteOutputType_3 = null,
+			concreteOutputType_4 = null, concreteOutputType_5, concreteOutputType_6 = null,
+			concreteOutputType_7;
 		if (outputLocals != null && i < outputLocals.length) {
 		  int abstractOutputType = outputLocals[i];
 		  if (abstractOutputType == 0) {
-			// If the local variable has never been assigned in this basic block, it is equal to its
-			// value at the beginning of the block.
-			concreteOutputType = inputLocals[i];
+			concreteOutputType_1 = inputLocals[i];
 		  } else {
-			concreteOutputType = getConcreteOutputType(abstractOutputType, numStack);
+			concreteOutputType_2 = getConcreteOutputType(abstractOutputType, numStack);
 		  }
+		  concreteOutputType_3 = phi(concreteOutputType_1, concreteOutputType_2);
 		} else {
-		  // If the local variable has never been assigned in this basic block, it is equal to its
-		  // value at the beginning of the block.
-		  concreteOutputType = inputLocals[i];
+		  concreteOutputType_4 = inputLocals[i];
 		}
-		// concreteOutputType might be an uninitialized type from the input locals or from the input
-		// stack. However, if a constructor has been called for this class type in the basic block,
-		// then this type is no longer uninitialized at the end of basic block.
+		concreteOutputType_5 = phi(concreteOutputType_3, concreteOutputType_4);
 		if (initializations != null) {
-		  concreteOutputType = getInitializedType(symbolTable, concreteOutputType);
+		  concreteOutputType_6 = getInitializedType(symbolTable, concreteOutputType_5);
 		}
+		concreteOutputType_7 = phi(concreteOutputType_5, concreteOutputType_6);
+		concreteOutputType = concreteOutputType_7;
 		return concreteOutputType;
+	}
+
+	// Assumption: if both i1 and i2 initialized, i2 is the newer value and should be chosen
+	private Integer phi(Integer i1, Integer i2) {
+  		if (i2 != null)
+  			return i2;
+  		return i1;
 	}
 
 	/**
