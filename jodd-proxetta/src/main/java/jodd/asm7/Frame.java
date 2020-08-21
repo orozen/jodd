@@ -1173,28 +1173,8 @@ class Frame {
       frameChanged = true;
     }
     for (int i = 0; i < numLocal; ++i) {
-      int concreteOutputType;
-      if (outputLocals != null && i < outputLocals.length) {
-        int abstractOutputType = outputLocals[i];
-        if (abstractOutputType == 0) {
-          // If the local variable has never been assigned in this basic block, it is equal to its
-          // value at the beginning of the block.
-          concreteOutputType = inputLocals[i];
-        } else {
-          concreteOutputType = getConcreteOutputType(abstractOutputType, numStack);
-        }
-      } else {
-        // If the local variable has never been assigned in this basic block, it is equal to its
-        // value at the beginning of the block.
-        concreteOutputType = inputLocals[i];
-      }
-      // concreteOutputType might be an uninitialized type from the input locals or from the input
-      // stack. However, if a constructor has been called for this class type in the basic block,
-      // then this type is no longer uninitialized at the end of basic block.
-      if (initializations != null) {
-        concreteOutputType = getInitializedType(symbolTable, concreteOutputType);
-      }
-      frameChanged |= merge(symbolTable, concreteOutputType, dstFrame.inputLocals, i);
+		int concreteOutputType = getConcreteOutputType(symbolTable, numStack, i);
+		frameChanged |= merge(symbolTable, concreteOutputType, dstFrame.inputLocals, i);
     }
 
     // If dstFrame is an exception handler block, it can be reached from any instruction of the
@@ -1246,7 +1226,32 @@ class Frame {
     return frameChanged;
   }
 
-  /**
+	private int getConcreteOutputType(SymbolTable symbolTable, int numStack, int i) {
+		int concreteOutputType;
+		if (outputLocals != null && i < outputLocals.length) {
+		  int abstractOutputType = outputLocals[i];
+		  if (abstractOutputType == 0) {
+			// If the local variable has never been assigned in this basic block, it is equal to its
+			// value at the beginning of the block.
+			concreteOutputType = inputLocals[i];
+		  } else {
+			concreteOutputType = getConcreteOutputType(abstractOutputType, numStack);
+		  }
+		} else {
+		  // If the local variable has never been assigned in this basic block, it is equal to its
+		  // value at the beginning of the block.
+		  concreteOutputType = inputLocals[i];
+		}
+		// concreteOutputType might be an uninitialized type from the input locals or from the input
+		// stack. However, if a constructor has been called for this class type in the basic block,
+		// then this type is no longer uninitialized at the end of basic block.
+		if (initializations != null) {
+		  concreteOutputType = getInitializedType(symbolTable, concreteOutputType);
+		}
+		return concreteOutputType;
+	}
+
+	/**
    * Merges the type at the given index in the given abstract type array with the given type.
    * Returns {@literal true} if the type array has been modified by this operation.
    *
