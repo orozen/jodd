@@ -113,60 +113,38 @@ public class CsvUtil {
 /*2*/		if (c == FIELD_SEPARATOR) {
 /*3*/			if (!inQuotedField_1) {	// ignore we are quoting
 /*5*/				fieldStart_2 = i_1 + 1;
-					fieldStart_3 = fieldStart_2;
-                } else {
-					fieldStart_3 = fieldStart_1;
-				}
-				fieldStart_10 = fieldStart_3;
-				i_6 = i_1;
-				inQuotedField_8 = inQuotedField_1;
+                }
+                fieldStart_3 = phi(fieldStart_1, fieldStart_2);
             } else {
 /*6*/			if (c == FIELD_QUOTE) {
 /*7*/				if (inQuotedField_1) {
 /*8*/					if (i_1 + 1 == len || line.charAt(i_1 + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
 /*10*/						fieldStart_4 = i_1 + 2;
-							fieldStart_5 = fieldStart_4;
 /*11*/						i_2 = i_1 + 1; // and skip the comma
-							i_3 = i_2;
 /*12*/						inQuotedField_2 = false;
-							inQuotedField_3 = inQuotedField_2;
-						} else {
-							fieldStart_5 = fieldStart_1;
-							i_3 = i_1;
-							inQuotedField_3 = inQuotedField_1;
 						}
-						fieldStart_8 = fieldStart_5;
-						i_4 = i_3;
-						inQuotedField_6 = inQuotedField_3;
+						fieldStart_5 = phi(fieldStart_1, fieldStart_4);
+						i_3 = phi(i_1, i_2);
+						inQuotedField_3 = phi(inQuotedField_1, inQuotedField_2);
 					} else {
 /*13*/					if (fieldStart_1 == i_1) {
 /*14*/						inQuotedField_4 = true;    // this is a beginning of a quote
-							inQuotedField_5 = inQuotedField_4;
 /*15*/						fieldStart_6 = fieldStart_1 + 1;            // move field start
-							fieldStart_7 = fieldStart_6;
-						} else {
-							inQuotedField_5 = inQuotedField_1;
-							fieldStart_7 = fieldStart_1;
 						}
-						fieldStart_8 = fieldStart_7;
-						i_4 = i_1;
-						inQuotedField_6 = inQuotedField_5;
+						inQuotedField_5 = phi(inQuotedField_1, inQuotedField_4);
+						fieldStart_7 = phi(fieldStart_1, fieldStart_6);
 					}
-					fieldStart_9 = fieldStart_8;
-					i_5 = i_4;
-					inQuotedField_7 = inQuotedField_6;
-				} else {
-					fieldStart_9 = fieldStart_1;
-					i_5 = i_1;
-					inQuotedField_7 = inQuotedField_1;
+					fieldStart_8 = phi(fieldStart_5, fieldStart_7);
+					i_4 = phi(i_1, i_3);
+					inQuotedField_6 = phi(inQuotedField_3, inQuotedField_5);
 				}
-				fieldStart_10 = fieldStart_9;
-				i_6 = i_5;
-				inQuotedField_8 = inQuotedField_7;
+				fieldStart_9 = phi(fieldStart_1, fieldStart_8);
+				i_5 = phi(i_1, i_4);
+				inQuotedField_7 = phi(inQuotedField_1, inQuotedField_6);
 			}
-			fieldStart = fieldStart_10;
-			i = i_6;
-			inQuotedField = inQuotedField_8;
+			fieldStart_10 = phi(fieldStart_3, fieldStart_9);
+			i_6 = phi(i_1, i_5);
+			inQuotedField_8 = phi(inQuotedField_1, inQuotedField_7);
         }
         // add last field - but only if string was not empty
         if (len > 0 && fieldStart <= len) {
