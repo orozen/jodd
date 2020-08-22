@@ -105,26 +105,68 @@ public class CsvUtil {
 
 			// After = slide(5) + slide(10) + slide(11) + slide(12) + slide(14) + slide(15)
 			// = {2,3,5,6,7,8,10,11,12,13,14,15}
+			boolean inQuotedField_1 = inQuotedField, inQuotedField_2, inQuotedField_3,
+				inQuotedField_4, inQuotedField_5, inQuotedField_6, inQuotedField_7, inQuotedField_8;
+			int i_1 = i, i_2, i_3, i_4, i_5, i_6;
+			int fieldStart_1 = fieldStart, fieldStart_2, fieldStart_3, fieldStart_4, fieldStart_5,
+				fieldStart_6, fieldStart_7, fieldStart_8, fieldStart_9, fieldStart_10;
 /*2*/		if (c == FIELD_SEPARATOR) {
-/*3*/			if (!inQuotedField) {	// ignore we are quoting
-/*5*/				fieldStart = i + 1;
-                }
+/*3*/			if (!inQuotedField_1) {	// ignore we are quoting
+/*5*/				fieldStart_2 = i_1 + 1;
+					fieldStart_3 = fieldStart_2;
+                } else {
+					fieldStart_3 = fieldStart_1;
+				}
+				fieldStart_10 = fieldStart_3;
+				i_6 = i_1;
+				inQuotedField_8 = inQuotedField_1;
             } else {
 /*6*/			if (c == FIELD_QUOTE) {
-/*7*/				if (inQuotedField) {
-/*8*/					if (i + 1 == len || line.charAt(i + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
-/*10*/						fieldStart = i + 2;
-/*11*/						i++; // and skip the comma
-/*12*/						inQuotedField = false;
+/*7*/				if (inQuotedField_1) {
+/*8*/					if (i_1 + 1 == len || line.charAt(i_1 + 1) == FIELD_SEPARATOR) {    // we are already quoting - peek to see if this is the end of the field
+/*10*/						fieldStart_4 = i_1 + 2;
+							fieldStart_5 = fieldStart_4;
+/*11*/						i_2 = i_1 + 1; // and skip the comma
+							i_3 = i_2;
+/*12*/						inQuotedField_2 = false;
+							inQuotedField_3 = inQuotedField_2;
+						} else {
+							fieldStart_5 = fieldStart_1;
+							i_3 = i_1;
+							inQuotedField_3 = inQuotedField_1;
 						}
+						fieldStart_8 = fieldStart_5;
+						i_4 = i_3;
+						inQuotedField_6 = inQuotedField_3;
 					} else {
-/*13*/					if (fieldStart == i) {
-/*14*/						inQuotedField = true;    // this is a beginning of a quote
-/*15*/						fieldStart++;            // move field start
+/*13*/					if (fieldStart_1 == i_1) {
+/*14*/						inQuotedField_4 = true;    // this is a beginning of a quote
+							inQuotedField_5 = inQuotedField_4;
+/*15*/						fieldStart_6 = fieldStart_1 + 1;            // move field start
+							fieldStart_7 = fieldStart_6;
+						} else {
+							inQuotedField_5 = inQuotedField_1;
+							fieldStart_7 = fieldStart_1;
 						}
+						fieldStart_8 = fieldStart_7;
+						i_4 = i_1;
+						inQuotedField_6 = inQuotedField_5;
 					}
+					fieldStart_9 = fieldStart_8;
+					i_5 = i_4;
+					inQuotedField_7 = inQuotedField_6;
+				} else {
+					fieldStart_9 = fieldStart_1;
+					i_5 = i_1;
+					inQuotedField_7 = inQuotedField_1;
 				}
+				fieldStart_10 = fieldStart_9;
+				i_6 = i_5;
+				inQuotedField_8 = inQuotedField_7;
 			}
+			fieldStart = fieldStart_10;
+			i = i_6;
+			inQuotedField = inQuotedField_8;
         }
         // add last field - but only if string was not empty
         if (len > 0 && fieldStart <= len) {
